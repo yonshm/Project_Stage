@@ -81,36 +81,7 @@
           
 
 
-          @if(isset($colis) && count($colis) > 0)
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Référence</th>
-                            <th>Statut</th>
-                            <th>Date d'Envoi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($colis as $coli)
-                        <tr>
-                            <td>{{ $coli->id }}</td>
-                            <td>{{ $coli->reference }}</td>
-                            <td>
-                                @if($coli->id_status == 1)
-                                    <span class="badge bg-success">Livré</span>
-                                @else
-                                    <span class="badge bg-warning">En cours</span>
-                                @endif
-                            </td>
-                            <td>{{ $coli->created_at->format('d/m/Y') }}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                @else
-                    <p class="text-muted">Aucun colis trouvé.</p>
-                @endif
+          
       </div>
   <div class="modal fade" id="exampleModal" data-bs-backdrop="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">

@@ -48,7 +48,8 @@ class BonEnvoiController extends Controller
             if ($bonEnvoi->arrivee == 1) {
             return redirect()->back()->with([
                 'info' => 'Le statut de cet envoi a déjà été mis à jour.',
-                'colis' => $colis
+                'colis' => $colis,
+                'bonEnvoi' => $bonEnvoi
             ]);
         }
             $bonEnvoi->arrivee = 1;
@@ -56,7 +57,8 @@ class BonEnvoiController extends Controller
                 
                 return redirect()->back()->with([
                     'success' => 'Statut mis à jour avec succès.',
-                    'colis' => $colis
+                    'colis' => $colis,
+                    'bonEnvoi' => $bonEnvoi
                 ]);  
             }
     }
