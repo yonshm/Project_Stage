@@ -1,34 +1,51 @@
 @extends('components.master')
 @section('content')
-<div class="home ">
-    @include('components.sideBar')
-    <div class="main container">
-        <div>
-            <h4>Ajouter Bon De distribution</h4>
+    <div class="home ">
+      @include('components.sideBar')
+    <div class="main">
+      @include('components.navBar')
+      <div class="card mx-3 mt-2">
+        <div class="card-body">
+          <h4 class="card-title">Ajouter Bon Distribution</h4>
+          <form class="mt-4">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-12">
+                      <div class="mb-3">
+                        <select class="select2 form-control">
+                          <option value="">Zone</option>
+                          <option value="">Option1</option>
+                          <option value="">Option1</option>
+                        </select>
+                      </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                      <div class="mb-3">
+                        <select class="select2 form-control">
+                          <option value="-1">Livreur</option>
+                          @foreach($livreur as $liv)
+                            <option value={{$liv->id}}>{{$liv->nom}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                </div>
+              </div>
+              <div class="form-actions mt-3">
+                <div class="d-flex justify-content-end gap-6">
+                  <button type="reset" class="btn bg-danger-subtle text-danger ">
+                    Reset
+                  </button>
+                  <button type="submit" class="btn btn-primary ">
+                    Crée Bon
+                  </button>
+                </div>
+              </div>
+            </form>
         </div>
-        <form>
-            <div class="input-group mb-3">
-                <label class="input-group-text" for="inputGroupSelect01">Zone</label>
-                <select class="form-select" id="inputGroupSelect01">
-                    <option selected>Choisier une zone</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-            </div>
-            <div class="input-group mb-3">
-                <label class="input-group-text" for="inputGroupSelect01">Livreur</label>
-                <select class="form-select" id="inputGroupSelect01">
-                    <option value="0">Choisier un Livreur</option>
-                    @foreach ($livreur as $item)
-                        <option value="{{$item->id}}">{{$item->nom}}</option>
-                    @endforeach
-                </select>
-            </div>
-            <button class="btn btn-primary hstack gap-6" type="submit">
-                +
-                Créer Un bon de distribution
-              </button>
-        </form>
-
+      </div>
+     
     </div>
+  </div>
+

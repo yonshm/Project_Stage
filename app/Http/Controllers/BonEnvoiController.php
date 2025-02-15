@@ -6,6 +6,7 @@ use App\Models\Coli;
 use App\Models\Bon_envoi;
 use Illuminate\Http\Request;
 use App\Models\BonDistribution;
+use Laravel\Pail\ValueObjects\Origin\Console;
 
 class BonEnvoiController extends Controller
 {
@@ -30,38 +31,41 @@ class BonEnvoiController extends Controller
             'ref.required' => 'La référence est obligatoire. Veuillez saisir une référence valide.'
         ]);
         $bonEnvoi = Bon_envoi::where('ref', $request->ref)->first();
-        $colis = Coli::whereHas('bon_ramassage.bon_envoi', function ($query) use ($bonEnvoi) {
-        $query->where('bon_envoi', $bonEnvoi->id); // Filtre par code d'envoi
-        })->with(['bon_ramassage.bon_envoi']) // Charge les relations pour éviter des requêtes supplémentaires
-        ->get();
-        //Vérifier si des colis existent
-        // if ($colis->isEmpty()) {
-        //     return response()->json(['message' => 'Aucun colis trouvé pour ce code d\'envoi.'], 404);
-        // }
-        if ($bonEnvoi) {
-            if ($bonEnvoi->arrivee == 1) {
-                return redirect()->back()->with('info', 'Le statut de cet envoi a déjà été mis à jour.');
+
+        if (!$bonEnvoi) {
+            return redirect()->back()->with('error', 'Référence non trouvée.');
+        }else{
+
+            $colis = Coli::whereHas('bon_ramassage.bon_envoi', function ($query) use ($bonEnvoi) {
+                $query->where('bon_envoi', $bonEnvoi->id); // Filtre par code d'envoi
+            })->with(['bon_ramassage.bon_envoi']) // Charge les relations pour éviter des requêtes supplémentaires
+            ->get();
+            //Vérifier si des colis existent
+            if ($colis->isEmpty()) {
+                return response()->json(['message' => 'Aucun colis trouvé pour ce code d\'envoi.'], 404);
             }
+        
+            if ($bonEnvoi->arrivee == 1) {
+            return redirect()->back()->with([
+                'info' => 'Le statut de cet envoi a déjà été mis à jour.',
+                'colis' => $colis
+            ]);
+        }
             $bonEnvoi->arrivee = 1;
             $bonEnvoi->save();
-            // Récupérer les colis associés au code d'envoi
-            // Créer un bon de distribution pour chaque colis
-            // foreach ($colis as $coli) {
-                //     $coli->id_status = 1;
-                //     $coli->save();
-                // }
                 
                 return redirect()->back()->with([
                     'success' => 'Statut mis à jour avec succès.',
                     'colis' => $colis
-                ]);
-                 } else {
-                return redirect()->back()->with('error', 'Référence non trouvée.');
+                ]);  
             }
     }
-    /**
-     * Show the form for creating a new resource.
-     */
+
+    public function showScanBonEnvoi()
+{
+    return view('moderateur.BonEnvoiScan'); // Initially, no data is passed
+}
+
     public function create()
     {
         //

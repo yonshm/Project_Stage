@@ -383,11 +383,15 @@
         </div>
         <span class="tooltip">Bon de Distribution</span>
       </li>
-      <li>
-        <a href="{{route('moderateur.bonEnvoi')}}">
-            <i class='bx bxs-paper-plane' ></i>
+      <li class="dropdown">
+        <a href="javascrip:void(0)" class="dropdown-btn">
+            <i class='bx bxs-paper-plane'></i>
           <span class="links_name">Bon d'envoi</span>
         </a>
+        <div class="dropdown-content">
+          <a href="{{route('moderateur.bonEnvoi')}}">Liste Bon d'envoi</a>
+          <a href="{{route('bonEnvScan')}}">Scan Bon d'envoi</a>
+      </div>
         <span class="tooltip">Bon d'envoi</span>
     </li>
       <li>

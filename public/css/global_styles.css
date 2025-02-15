@@ -41996,10 +41996,7 @@ h6 {
     width: 100%;
     height: 90vh;
 }
-.home .sidebar {
-    height: 100%;
-    padding: 15px 10px;
-}
+
 .home .sidebar .part h6 {
     /* width: fit-content; */
     margin: 10px 0 3px;

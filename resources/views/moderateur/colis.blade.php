@@ -5,10 +5,9 @@
     
     <div class="main">
       @include('components.navBar')
-      <div class="acc-filter container">
+      <div class="mx-3">
+      <div class="acc-filter">
         <div class="colis-filter">
-
-
           <div class="accordion mt-3" id="accordionExample">
             <div class="accordion-item">
               <h2 class="accordion-header">
@@ -35,7 +34,8 @@
                                   <option value="">Option1</option>
                                 </select>
                               </div>
-                          </div>      
+                        </div>      
+                           
 
 
                           <div class="col-md-4">
@@ -92,6 +92,7 @@
                 </div>
               </div>
             </div>
+    </div>
       <div class="table-cont mx-auto">
         <div class="table-responsive">
 
@@ -186,73 +187,10 @@
               </tbody>
             </table>
           </div>
-            {{-- <table id="myTable" class="display">
-                <thead>
-                    <th>Code d'envoi</th>
-                    <th>Date d'expédition</th>
-                    <th>Télephone</th>
-                    <th>Nom du magasin</th>
-                    <th>Etat</th>
-                    <th>Status</th>
-                    <th>Ville</th>
-                    <th>Prix</th>
-                    <th>Action</th>
-                </thead>
-                <tbody>
-                  @foreach ($colis as $coli)
-                    <tr>
-                      <td>{{$coli->ref}}</td>
-                      <td>{{$coli->date_creation}}</td>
-                      <td>{{$coli->telephone}}</td>
-                      <td>{{$coli->client->nom_magasin ?? $coli->client->nom}}</td>
-                      <td>{{$coli->etat == 1 ? 'paye' : 'Non paye'}}</td>
-                      <td>{{$coli->status->nom_status ?? ''}}</td>
-                      <td>{{$coli->ville->nom_ville}}</td>
-                      <td>{{$coli->prix}}</td>
-                      <td class="text-center">
-                          <div class="dropdown dropstart">
-                          <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  
-                                    stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  
-                                    class="icon icon-tabler icons-tabler-outline icon-tabler-dots-vertical">
-                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                    <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                                    <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
-                            </svg>
+          </div>
+        </div>
+
+    </div>
     
-                          </a>
-                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
-                            <li>
-                              <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-                                  Details de bon
-                              </a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-                                  Enregistrer le bon
-                              </a>
-                            </li>
-                            <li>
-                              <a class="dropdown-item d-flex align-items-center gap-3" href="javascript:void(0)">
-                                
-                                      Voir en PDF
-                              </a>
-                            </li>
-                          </ul>
-                        </div>
-                    </td>
-                    </tr>
-                      
-                      
-                  @endforeach
-                    
-                    
-                    
-                </tbody>
-            </table> --}}
-    </div>
-    </div>
-    </div>
   </div>
 @endsection
