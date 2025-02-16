@@ -90,6 +90,10 @@ Route::get('/moderateur/bonDistribution/ajouter', [BonDistributionController::cl
 Route::get('/moderateur/side', function (){
     return view('components.sideBar');
 });
+
+Route::get('/moderateur/test', function (){
+    return view('moderateur.test');
+});
 Route::get('/moderateu/bon-envoi-scan', [BonEnvoiController::class, 'showScanBonEnvoi'])->name('bonEnvScan');
 
 

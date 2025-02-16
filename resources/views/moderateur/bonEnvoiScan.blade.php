@@ -91,6 +91,8 @@
 {{-- Tables of colis --}}
 </div>
 
+
+
 @if(session()->has('bonEnvoi'))
 <div class="card mt-3">
   <div class="card-body">
@@ -167,9 +169,62 @@
   </div>
 </div>
 @endif
-<div class="colis-tables d-flex">
-
-@if(session()->has('colis') && session('colis')->isNotEmpty())
+@if(session()->has('colis'))
+<div class="card mt-3">
+  <div class="card-body">
+    <h4 class="card-title">Scan Du Colis</h4>
+    <form id="status-form" action="" method="POST">
+      @csrf
+      <div class="row">
+        <div class="col-md-12">
+          <div class="floating mb-3">
+          <input 
+        type="text" 
+        name="ref" 
+        placeholder="Scannez ou tapez le référence" 
+        class="form-control" 
+        required 
+        onkeydown="handleScanner(event)"/>
+      </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+    @error('ref')
+    <span style="color: rgb(255, 0, 0);">{{ $message }}</span>
+@enderror
+  
+<div class="colis-tables">
+  <div class="card mb-3 mt-3">
+    <div class="card-body">
+      <h4 class="card-title">Colis Scanée</h4>  
+        <div class="table-responsive">  
+        <table class="table mb-0 ">
+        <thead class="table-success">
+            <tr>
+                <th scope="col">Ref</th>
+                <th scope="col">Statut</th>
+                <th scope="col">Ville</th>
+            </tr>
+        </thead>
+        <tbody>
+          @foreach (session('colis') as $item)
+              
+          <tr>
+            <td>{{$item->ref}}</td>
+            <td>{{$item->status->nom_status ?? ''}}</td>
+            <td>{{$item->ville->nom_ville}}</td>
+          </tr>
+          
+            @endforeach
+        </tbody>
+        </table>
+        </div> 
+        </div> 
+      </div> 
+    
+{{-- @if(session()->has('colis') && session('colis')->isNotEmpty())
 <div class="card mt-3">
   <div class="card-body">
     <h4 class="card-title">Colis</h4>
@@ -277,10 +332,10 @@
     </div>
     </div>
   </div>
+@endif --}}
+</div>
 @endif
 </div>
 </div>
-</div>
-
 </div>
 @endsection

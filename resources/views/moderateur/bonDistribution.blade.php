@@ -73,7 +73,7 @@
                   </div>
                 </div>
               </div>
-      </div>
+      
       <div class="ajt-bonDistribution text-end me-4">
         <button class="btn btn-success mt-3 "><a href="{{route('bonDistr.create')}}">Ajouter Bon de distribution</a></button>
       </div>
@@ -198,5 +198,6 @@
   </div>
 </div>
   </div>
+</div>
 
 @endsection
