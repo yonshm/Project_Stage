@@ -68,6 +68,16 @@ class BonEnvoiController extends Controller
     return view('moderateur.BonEnvoiScan'); // Initially, no data is passed
 }
 
+    // scan les colis reçcue par wirehouse
+    // public function scanColisReçue(Request $request){
+    //     $coli = Coli::where('ref', $request->ref);
+    //     if(!$coli){
+    //          return redirect()->back()->with('error', 'Coli non trouvée.');
+    //     }elseif($coli->id_status == 1){
+    //         $coli
+    //     }
+    // }
+
     public function create()
     {
         //

@@ -75,7 +75,7 @@
               </div>
       
       <div class="ajt-bonDistribution text-end me-4">
-        <button class="btn btn-success mt-3 "><a href="{{route('bonDistr.create')}}">Ajouter Bon de distribution</a></button>
+        <a href="{{route('bonDistr.ajouterBonDistr')}}"><button class="btn btn-success mt-3 ">Ajouter Bon de distribution</button></a>
       </div>
       <div class="table-cont mx-auto">
         <div class="table-responsive">
@@ -102,9 +102,15 @@
                     <h6 class="fs-4 fw-semibold mb-0">Colis</h6>
                   </th>
                   <th>Action</th>
+                  
                 </tr>
               </thead>
               <tbody>
+                @if ($bonDistributions->isEmpty())
+                  <tr>
+                    <td class="text-center" colspan="7">Aucune Bon distribution</td>
+                  </tr>
+                  @else
                 @foreach ($bonDistributions as $item)
                 <tr>
                   <td>
@@ -159,6 +165,7 @@
                   </td>
                 </tr>
                 @endforeach
+                @endif
               </tbody>
             </table>
           </div>
