@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BonDistribution extends Model
 {
-    protected $fillable = ['id_coli'];
+    protected $fillable = ['id_livreur'];
     public $timestamps = false;
     
     public function coli(){

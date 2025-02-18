@@ -7,7 +7,7 @@ use App\Models\Coli;
 use App\Models\Utilisateur;
 use App\Models\Zone;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Log;
 class BonDistributionController extends Controller
 {
     /**
@@ -31,9 +31,7 @@ class BonDistributionController extends Controller
         $colis = Coli::whereHas('ville.zone',function ($query) use ($zoneId) {
             $query->where('id', $zoneId);
         })->count();
-        $livreur = Utilisateur::whereHas('ville.zone', function ($query) use ($zoneId) {
-            $query->where('id', $zoneId);
-        })->get();
+       
         return view('moderateur.ajouteBonDistribution', compact('livreur', 'zone', 'colis'));
     }
     /**
@@ -41,10 +39,12 @@ class BonDistributionController extends Controller
      */
     public function create(Request $request)
     {
-
-        $livreur = Utilisateur::where('id',$request->livreur)->first();
-        $colis = Coli::whereHas('ville.zone', function ($query) {
-            $query->where('id', 5);
+        $zoneId = 5;
+        $livreur = Utilisateur::whereHas('ville.zone', function ($query) use ($zoneId) {
+            $query->where('id', $zoneId);
+        })->get();
+        $colis = Coli::whereHas('ville.zone', function ($query) use ($zoneId){
+            $query->where('id', $zoneId);
         })
         ->whereNull('bon_distribution')
         ->whereHas('bon_ramassage.bon_envoi', function($query){
@@ -60,7 +60,19 @@ class BonDistributionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $livreurId = $request->input('livreur_id');
+        $colisIds = $request->input('colis_ids');
+
+        // Log::info('Livreur ID: ' . $livreurId);
+        // Log::info('Colis IDs: ' . json_encode($colisIds));
+        $bonDistr = BonDistribution::create([
+            'id_livreur' => $livreurId,
+        ]);
+
+        Coli::whereIn('ref', $colisIds)->update(['bon_distribution' => $bonDistr->id,'id_status' => 3]);
+
+        return response()->json(['message' => 'Bon Distribution created successfully']);
+
     }
 
     /**

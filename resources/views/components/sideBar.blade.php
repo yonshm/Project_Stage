@@ -379,7 +379,7 @@
         </a>
         <div class="dropdown-content">
             <a href="{{route('bonDistr.index')}}">Liste Bon distribution</a>
-            <a href="{{route('bonDistr.ajouterBonDistr')}}">Ajouter Bon distribution</a>
+            <a href="{{route('bonDistr.create')}}">Ajouter Bon distribution</a>
         </div>
         <span class="tooltip">Bon de Distribution</span>
       </li>

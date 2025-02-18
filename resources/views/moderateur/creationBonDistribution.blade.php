@@ -6,7 +6,6 @@
       @include('components.navBar')
 
       <div class="mx-3"> 
-        <div><strong>Zone :</strong> <strong>Livreur : </strong>{{$livreur->nom}}</div>
         
       <div class="table-cont mx-auto">
         <div class="table-responsive">
@@ -51,8 +50,16 @@
                 </tr>
               </thead>
               <tbody>
+                @if ($colis->isEmpty())
+                <tr>
+                <td class="text-center" colspan="10">
+                  Aucune colis reçue
+                </td>
+            </tr>
+
+              @else
                 @foreach ($colis as $coli)
-                <tr id="{{$coli->id}}">
+                <tr id="{{$coli->ref}}">
                   <td>
                       <div class="ms-3">
                         <h6 class="fs-4 fw-semibold mb-0">{{$coli->ref}}</h6>
@@ -79,6 +86,7 @@
                   <td>
                     <p class="mb-0 fw-normal">{{$coli->prix}}</p>
                   </td>
+                  
                   <td>
                     <div class="dropdown dropstart">
                       <a href="javascript:void(0)" class="text-muted" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -108,26 +116,194 @@
                     </td>
                 </tr>
                 @endforeach
+                @endif
               </tbody>
             </table>
           </div>
           </div>
         </div>
-        <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-secondary">
-                Ajouter
-              </button>
+
+
+        <div class="mb-3 d-flex justify-content-between align-items-center">
+          <span id="ajouter-btn" data-bs-toggle="modal" data-bs-target="#primary-header-modal"
+            class="ms-auto btn btn-success mb-0">Ajouter</span>
         </div>
+
+
+
+        <div id="primary-header-modal" class="modal fade" tabindex="-1" aria-labelledby="primary-header-modalLabel"
+            style="display: none;" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg">
+              <div class="modal-content">
+                <div class="modal-header modal-colored-header bg-primary text-white">
+                  <h4 class="modal-title text-white" id="primary-header-modalLabel">
+                    Bon Distribution
+                  </h4>
+                  <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <h5 >Colis selectionnez :<span id="colis-count">0</span></h5>
+                  <h5 class="mt-0">Livreur</h5>
+                  <div class="row">
+                    <div class="mb-3">
+                      <select id="livreur" class="form-select" name="id_livreur">
+                        <option value="" selected="">Choisissez livreur ...</option>
+                        @foreach($livreur as $liv)
+                            <option value={{$liv->id}}>{{$liv->nom}}</option>
+                          @endforeach
+                        
+                      </select>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="annuler" class="btn btn-light" data-bs-dismiss="modal">
+                    Annuler
+                  </button>
+                  <button type="submit" id="btn-enregisterBonDistr" class="btn bg-primary-subtle text-primary ">
+                    Enregister
+                  </button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
       </div>
     </div>
   </div>
   <script>
-    const tout = document.getElementById('tout');
-    tout.addEventListener('click', () => {
-      const checkboxes = document.querySelectorAll('tbody tr td .coli-checked');
-      checkboxes.forEach(checkbox => {
-        checkbox.checked = tout.checked;
-      });
+  const tout = document.getElementById('tout');
+  const ajouterBtn = document.getElementById('ajouter-btn'); 
+  const enregisterBonDistr = document.getElementById('btn-enregisterBonDistr');
+
+  // Function to get the selected colis
+  function getSelectedColis() {
+    const checkboxes = document.querySelectorAll('tbody tr td .coli-checked');
+    const colis = [];
+    checkboxes.forEach(checkbox => {
+      if (checkbox.checked) {
+        colis.push(checkbox.parentElement.parentElement.id);  // Assuming ID is the colis identifier
+      }
     });
-  </script>
+    return colis;
+  }
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+  toggleAjouterBtn();
+  updateColisCount();
+}); 
+
+  function updateColisCount() {
+  const colis = getSelectedColis();
+  document.getElementById('colis-count').textContent = colis.length;
+}
+
+  // Function to enable/disable the "ajouter" button based on selected colis
+  function toggleAjouterBtn() {
+    const colis = getSelectedColis();  // Get selected colis
+    console.log('Selected colis:', colis); // Debugging statement
+
+    // If no colis are selected, disable the button
+    if (colis.length === 0) {
+      console.log('No colis selected, disabling button');
+      ajouterBtn.disabled = true;
+    } else {
+      console.log('Colis selected, enabling button');
+      ajouterBtn.disabled = false;
+    }
+  }
+
+  // Event listener for the "select all" checkbox (tout)
+  tout.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('tbody tr td .coli-checked');
+    checkboxes.forEach(checkbox => {
+      checkbox.checked = tout.checked; // Set all checkboxes to match the "select all" state
+    });
+
+    // Call toggleAjouterBtn to enable/disable the button based on selected checkboxes
+    toggleAjouterBtn();
+  });
+
+  // Event listener for the "ajouter" button
+  ajouterBtn.addEventListener('click', () => {
+    const colis = getSelectedColis();  // Get the list of selected colis
+    document.getElementById('colis-count').innerHTML = colis.length;  // Display the selected colis count
+    console.log(colis);
+
+    // Call toggleAjouterBtn to enable/disable the button
+    toggleAjouterBtn();
+  });
+  enregisterBonDistr.addEventListener('click', ()=>{
+    const colis = getSelectedColis();
+    const livreur = document.getElementById('livreur').value;
+    
+  })
+
+  // enregisterBonDistr.addEventListener('click', ()=>{
+    
+  //   const colis = getSelectedColis();
+  //   const livreur = document.getElementById('livreur').value;
+  //   console.log(livreur)
+    
+  //   fetch('{{route('bonDistr.store')}}',{
+  //     method : 'POST',
+  //     headers : {
+  //       'Content-Type': 'application/json',
+  //       'X-CSRF-TOKEN': '{{ csrf_token() }}'
+  //     },
+  //     body : JSON.stringify({
+  //       livreur_id : livreur,
+  //       colis_ids : colis
+  //     })
+  //   })
+  //   .then(response => response.json())
+  //   .then(data => {
+  //     // Handle success response
+  //     console.log(data);
+  //     // Optionally, close the modal and reset the form
+  //     // $('#primary-header-modal').modal('hide');
+  //     // document.getElementById('distribution-form').reset();
+  //     // updateColisCount();
+  //     toggleAjouterBtn();
+  //     const checkedColis = getSelectedColis();
+  //     checkedColis.forEach(coliId => {
+  //       const row = document.getElementById(coliId);
+  //       if (row) {
+  //         row.remove();
+  //       }
+  //     });
+  //   })
+  //   .catch(error => {
+  //     // Handle error response
+  //     console.error('Error:', error);
+  //   });
+  // });
+
+  // Event listeners for individual checkboxes
+  // Event listeners for individual checkboxes
+document.querySelectorAll('.coli-checked').forEach(checkbox => {
+  checkbox.addEventListener('change', () => {
+    toggleAjouterBtn();
+    updateColisCount(); // Now defined
+  });
+});
+
+
+  // Initial state update
+  toggleAjouterBtn();
+  // updateColisCount();
+  // function validation(){
+  //   const livreur = document.getElementById('livreur').value;
+  //   let isValid = true;
+  //   if(livreur === ""){
+  //     isValid = false;
+  //     console.log('"Veuillez choisir un livreur."')
+  //   }
+  //   return isValid;
+  // }
+</script>
+
   @endsection

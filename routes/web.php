@@ -88,9 +88,9 @@ Route::get('/moderateur/test', function (){
 Route::get('/moderateur/bonDistribution', [BonDistributionController::class, 'index'])->name('bonDistr.index');
 Route::get('/moderateur/bonDistribution/ajouterBonDistr', [BonDistributionController::class, 'ajouterBonDistr'])->name('bonDistr.ajouterBonDistr');
 Route::get('/moderateur/bonDistribution/creeBonDistr', [BonDistributionController::class, 'create'])->name('bonDistr.create');
-Route::get('/moderateur/side', function (){
-    return view('components.sideBar');
-});
+Route::get('/moderateur/bonDistribution/creeBonDistr', [BonDistributionController::class, 'create'])->name('bonDistr.create');
+Route::post('/moderateur/bonDistribution/creeBonDistr', [BonDistributionController::class, 'store'])->name('bonDistr.store');
+
 
 Route::get('/moderateur/test', function (){
     return view('moderateur.test');
