@@ -17,7 +17,7 @@
               <thead class="text-dark fs-4">
                 <tr>
                   <th>
-                    <h6 class="fs-4 fw-semibold mb-0">Code d'envoi</h6>
+                    <h6 class="fs-4 fw-semibold mb-0">Ref</h6>
                   </th>
                   <th>
                     <h6 class="fs-4 fw-semibold mb-0">Date D'expedition</h6>
@@ -119,15 +119,90 @@
                 @endif
               </tbody>
             </table>
+
+
           </div>
           </div>
         </div>
-
-
-        <div class="mb-3 d-flex justify-content-between align-items-center">
-          <span id="ajouter-btn" data-bs-toggle="modal" data-bs-target="#primary-header-modal"
-            class="ms-auto btn btn-success mb-0">Ajouter</span>
+        <div class="d-flex flex-column align-items-end">
+          <span id="ajouter-btn" class="ms-auto btn btn-success mb-2 ">Ajouter</span>
         </div>
+
+
+        <div class="d-flex justify-content-between" style="display: none;">
+
+          <div class="card col-5" id="listLivreurs" style="display: none;">
+            <div class="card-body ">
+              <h4 class="card-title mb-3">Liste des livreur</h4>
+            <ol class="list-group list-group-numbered" id="listeLivreurOl">
+              
+            </ol>
+          </div>
+          </div>
+
+        <div>
+          <div class="table-responsive mb-2 border rounded-1" >
+            <table class="table text-nowrap mb-0 align-middle">
+              <thead class="text-dark fs-4">
+                <tr>
+                  <th>
+                    <h6 class="fs-4 fw-semibold mb-0">Reference</h6>
+                  </th>
+                  <th>
+                    <h6 class="fs-4 fw-semibold mb-0">Nom du magasin</h6>
+                  </th>
+                  <th>
+                    <h6 class="fs-4 fw-semibold mb-0">Ville</h6>
+                  </th>
+                  <th>
+                    <h6 class="fs-4 fw-semibold mb-0">Status</h6>
+                  </th>
+                  <th>
+                    <h6 class="fs-4 fw-semibold mb-0">Action</h6>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="ms-3">
+                        <h6 class="fs-4 fw-semibold mb-0">Sunil Joshi</h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="ms-3">
+                        <h6 class="fs-4 fw-semibold mb-0">Sunil Joshi</h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <p class="mb-0 fw-normal fs-4">Elite Admin</p>
+                  </td>
+                  <td>
+                    <span class="badge bg-success-subtle text-success">Active</span>
+                  </td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <a href="javascript:void(0)" class="text-bg-secondary text-white fs-6 round-40 rounded-circle me-n2 card-hover border border-2 border-white d-flex align-items-center justify-content-center">
+                        S
+                      </a>
+                      <a href="javascript:void(0)" class="text-bg-danger text-white fs-6 round-40 rounded-circle me-n2 card-hover border border-2 border-white d-flex align-items-center justify-content-center">
+                        D
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="d-flex flex-column align-items-end">
+            <span id="valider-btn" class="ms-auto btn btn-success mb-2 ">Valider</span>
+          </div>
+        </div>
+      </div>
 
 
 
@@ -147,7 +222,7 @@
                   <div class="row">
                     <div class="mb-3">
                       <select id="livreur" class="form-select" name="id_livreur">
-                        <option value="" selected="">Choisissez livreur ...</option>
+                        <option value="-1">Choisissez livreur ...</option>
                         @foreach($livreur as $liv)
                             <option value={{$liv->id}}>{{$liv->nom}}</option>
                           @endforeach
@@ -178,69 +253,110 @@
   const ajouterBtn = document.getElementById('ajouter-btn'); 
   const enregisterBonDistr = document.getElementById('btn-enregisterBonDistr');
 
-  // Function to get the selected colis
   function getSelectedColis() {
     const checkboxes = document.querySelectorAll('tbody tr td .coli-checked');
     const colis = [];
     checkboxes.forEach(checkbox => {
       if (checkbox.checked) {
-        colis.push(checkbox.parentElement.parentElement.id);  // Assuming ID is the colis identifier
+        colis.push(checkbox.parentElement.parentElement.id);  
       }
     });
     return colis;
   }
-
-
-  document.addEventListener('DOMContentLoaded', () => {
-  toggleAjouterBtn();
-  updateColisCount();
-}); 
-
-  function updateColisCount() {
-  const colis = getSelectedColis();
-  document.getElementById('colis-count').textContent = colis.length;
-}
-
-  // Function to enable/disable the "ajouter" button based on selected colis
-  function toggleAjouterBtn() {
-    const colis = getSelectedColis();  // Get selected colis
-    console.log('Selected colis:', colis); // Debugging statement
-
-    // If no colis are selected, disable the button
-    if (colis.length === 0) {
-      console.log('No colis selected, disabling button');
-      ajouterBtn.disabled = true;
-    } else {
-      console.log('Colis selected, enabling button');
-      ajouterBtn.disabled = false;
-    }
-  }
-
-  // Event listener for the "select all" checkbox (tout)
   tout.addEventListener('click', () => {
     const checkboxes = document.querySelectorAll('tbody tr td .coli-checked');
     checkboxes.forEach(checkbox => {
-      checkbox.checked = tout.checked; // Set all checkboxes to match the "select all" state
+      checkbox.checked = tout.checked; 
     });
 
-    // Call toggleAjouterBtn to enable/disable the button based on selected checkboxes
-    toggleAjouterBtn();
   });
 
-  // Event listener for the "ajouter" button
+ 
   ajouterBtn.addEventListener('click', () => {
-    const colis = getSelectedColis();  // Get the list of selected colis
-    document.getElementById('colis-count').innerHTML = colis.length;  // Display the selected colis count
-    console.log(colis);
+    const colis = getSelectedColis();
+    const errorMessages = document.querySelectorAll(".form-control-feedback");
+        errorMessages.forEach(msg => msg.remove());  
+    if(colis.length === 0){
+      showError('ajouter-btn', 'Veuillez selectionner au moins un colis');
+    }else{
 
-    // Call toggleAjouterBtn to enable/disable the button
-    toggleAjouterBtn();
+      document.getElementById('colis-count').innerHTML = colis.length;  
+      $('#primary-header-modal').modal('show');
+    }
+
+    
   });
-  enregisterBonDistr.addEventListener('click', ()=>{
+  enregisterBonDistr.addEventListener('click', () => {
     const colis = getSelectedColis();
     const livreur = document.getElementById('livreur').value;
+    const errorMessages = document.querySelectorAll(".form-control-feedback");
+    errorMessages.forEach(msg => msg.remove()); 
+    if(livreur == '-1'){
+      showError('livreur', 'Veuillez selectionner le livreur');
+    }else{
+      $('#primary-header-modal').modal('hide');
+      let bon = {
+        livreur_id: livreur,
+        colis_ids: colis
+      };
+
+      let bonDistributions = JSON.parse(localStorage.getItem('bon_distribution')) || [];
+      bonDistributions.push(bon);
+      localStorage.setItem('bon_distribution', JSON.stringify(bonDistributions));
+
+      let unvalidatedColis = JSON.parse(localStorage.getItem('unvalidatedColis')) || [];
+      unvalidatedColis.push(colis);
+      localStorage.setItem('unvalidatedColis', JSON.stringify(unvalidatedColis));
+
+      const checkedColis = getSelectedColis();
+      fillListeLivreur();
+        checkedColis.forEach(coliId => {
+           const row = document.getElementById(coliId);
+           if (row) {
+              row.remove();
+           }
+
+          });
+          const colisList = @json($colis);
+          console.log('colis: ',colisList)
+          const storedColisRefs = JSON.parse(localStorage.getItem('unvalidatedColis')) || [];
+          console.log(storedColisRefs) // Array of refs stored in localStorage
+          const filteredColis = colisList.filter(colis => !storedColisRefs == colis.ref);
+          console.log(filteredColis)
+      }
+      });
+
+    function fillListeLivreur() {
+      const liste = document.getElementById('listLivreurs');
+      const livreurOl = document.getElementById('listeLivreurOl');
+      const bonDistributions = JSON.parse(localStorage.getItem('bon_distribution')) || [];
     
-  })
+    livreurOl.innerHTML = '';
+    const livreurs = @json($livreur);
+    bonDistributions.forEach(bon => {
+      const matchedLivreur = livreurs.find(livreur => livreur.id == bon.livreur_id);
+      const livreurName = matchedLivreur ? matchedLivreur.nom : "Inconnu";
+      livreurOl.innerHTML += (`
+            <li class="list-group-item d-flex justify-content-between align-items-start m-0" id="${bon.colis_ids[0]}">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold">${livreurName}</div>
+                </div>
+                <span class="badge bg-primary">${bon.colis_ids.length}</span>
+            </li>
+        `);
+    });
+
+    // Show list if there are items, otherwise hide
+    if (liste) {
+        liste.style.display = bonDistributions.length > 0 ? "block" : "none";
+    }
+}
+  window.onload = function() {
+      console.log("Window is loaded!");
+      // Call your function here
+      fillListeLivreur();
+
+  };
 
   // enregisterBonDistr.addEventListener('click', ()=>{
     
@@ -266,8 +382,6 @@
   //     // Optionally, close the modal and reset the form
   //     // $('#primary-header-modal').modal('hide');
   //     // document.getElementById('distribution-form').reset();
-  //     // updateColisCount();
-  //     toggleAjouterBtn();
   //     const checkedColis = getSelectedColis();
   //     checkedColis.forEach(coliId => {
   //       const row = document.getElementById(coliId);
@@ -284,26 +398,16 @@
 
   // Event listeners for individual checkboxes
   // Event listeners for individual checkboxes
-document.querySelectorAll('.coli-checked').forEach(checkbox => {
-  checkbox.addEventListener('change', () => {
-    toggleAjouterBtn();
-    updateColisCount(); // Now defined
-  });
-});
 
 
-  // Initial state update
-  toggleAjouterBtn();
-  // updateColisCount();
-  // function validation(){
-  //   const livreur = document.getElementById('livreur').value;
-  //   let isValid = true;
-  //   if(livreur === ""){
-  //     isValid = false;
-  //     console.log('"Veuillez choisir un livreur."')
-  //   }
-  //   return isValid;
-  // }
+
+function showError(inputId, message) {
+        const inputField = document.getElementById(inputId);
+        const errorSmall = document.createElement("small");
+        errorSmall.classList.add("form-control-feedback", "text-danger");
+        errorSmall.textContent = message;
+        inputField.parentElement.appendChild(errorSmall);
+    }
 </script>
 
   @endsection
